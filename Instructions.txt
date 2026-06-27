@@ -14,6 +14,17 @@
 
 ---
 
+## Dataset
+
+1. Download the N-BaIoT dataset from:
+https://www.kaggle.com/datasets/mkashifn/nbaiot-dataset
+
+2. Extract the CSV files into the project's dataset/ folder.
+
+3. Verify the folder structure matches the README before running any training or evaluation scripts.
+
+---
+
 ## 1. Clone or Extract the Project
 
 Clone the repository:
