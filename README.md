@@ -4,7 +4,7 @@ An intelligent, web-based Intrusion Detection System (IDS) for detecting IoT bot
 
 The system provides real-time threat analysis through an interactive Flask dashboard — upload IoT network traffic data and get attack predictions, threat severity, feature-level explanations, and model performance visualizations, all in one place.
 
-🔗 **Live Demo: Coming Soon** [your-app-name.onrender.com](#) <!-- replace once deployed -->
+🔗 **Live Demo:** [your-app-name.onrender.com](#) <!-- replace once deployed -->
 
 ---
 
@@ -33,8 +33,7 @@ The system provides real-time threat analysis through an interactive Flask dashb
 
 - 🔒 Federated Learning–based anomaly detection
 - 🧠 Centralized vs. Federated Autoencoder comparison
-- 📊 Feature-level explainability using reconstruction-error contribution analysis (with optional offline SHAP analysis)
-- 🔄 Shared Min-Max scaler for consistent training, evaluation, and inference
+- 📊 Feature-level explainability inspired by SHAP analysis
 - 📈 Threat Score derived from reconstruction error
 - 📉 Automatically generated confusion matrix
 - 📊 Model performance comparison charts
@@ -150,7 +149,6 @@ Code/
 │   └── js/
 │
 ├── templates/
-│
 │
 └── uploads/
 ```
@@ -304,12 +302,39 @@ Threat Score = min((Reconstruction Error / Detection Threshold) × 100, 100)
 
 ## Dataset
 
-This project uses the **N-BaIoT** dataset for training and evaluation, which includes traffic captured from real IoT devices infected with the Mirai and BASHLITE (Gafgyt) botnets.
+This project uses the **N-BaIoT** dataset for training and evaluation, which contains benign and botnet traffic collected from real IoT devices infected with the Mirai and BASHLITE (Gafgyt) malware.
 
 **Attack classes:**
 
 - Mirai — ACK, SYN, Scan, UDP, UDP-Plain
 - Gafgyt (BASHLITE) — Combo, Junk, Scan, TCP, UDP
+
+### Download
+
+The dataset is **not included in this repository** due to its size (several GB). Download it separately from the original source:
+
+- **N-BaIoT dataset:** https://www.kaggle.com/datasets/mkashifn/nbaiot-dataset
+
+### Expected Folder Structure
+
+After downloading, place the required CSV files inside `dataset/`:
+
+```text
+Code/
+│
+├── dataset/
+│   ├── 1.benign.csv
+│   ├── 1.mirai.ack.csv
+│   :   ...
+│   └── features.csv
+│
+├── models/
+├── scripts/
+├── app.py
+└── ...
+```
+
+> **Note:** the `1.*.csv` prefix corresponds to device 1 in the N-BaIoT dataset, which is what `evaluate_models.py` and `predict.py` currently expect. The full dataset contains nine devices (`1.*` through `9.*`) — using a different device's files will require updating the filenames referenced in those scripts accordingly.
 
 ---
 
@@ -333,11 +358,10 @@ This implementation extends the original research with:
 ## Future Work
 
 - Per-flow prediction for batch CSV uploads (currently aggregate-level)
-- Real-time network traffic capture
+- Live packet capture instead of CSV-only analysis
 - Live dashboard updates
 - Support for additional IoT intrusion datasets
 - Docker deployment
-- Support for live packet capture instead of CSV-only analysis
 - Persistent storage for uploaded files (e.g. S3-compatible storage) beyond Render's ephemeral disk
 
 ---
