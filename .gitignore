@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Flask uploads
+uploads/*
+
+#Datasets
+dataset/
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Python env
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Matplotlib cache
+.matplotlib/

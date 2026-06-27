@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Threat Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- ── Header ───────────────────────────────────────────── -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="wordmark">
+                <svg class="wordmark-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7V12C3 16.55 6.84 20.74 12 22C17.16 20.74 21 16.55 21 12V7L12 2Z"
+                          stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M9 12L11 14L15 10"
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>IoT Threat Intelligence Dashboard</span>
+            </div>
+            <span class="header-badge">● Models Loaded</span>
+        </div>
+    </header>
+
+    <!-- ── Main ─────────────────────────────────────────────── -->
+    <main class="main-content">
+
+        <div class="page-hero">
+            <h1 class="hero-title">IoT Botnet Detection</h1>
+            <p class="hero-subtitle">Federated Learning and Explainable AI for IoT Botnet Detection</p>
+        </div>
+
+        <form action="/analyze" method="POST" enctype="multipart/form-data" class="analysis-form">
+            <div class="form-grid">
+
+                <!-- Model Selection -->
+                <div class="form-section">
+                    <div class="section-label">Threat Model</div>
+                    <div class="model-cards">
+
+                        <label class="model-card" id="card-federated">
+                            <input type="radio" name="model" value="Federated" class="model-radio" checked>
+
+                                 <div class="model-card-inner">
+                                    <div class="model-card-top">
+                                        <div class="model-icon">
+                                            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="10" cy="3" r="2" stroke="currentColor" stroke-width="1.5"/>
+                                                <circle cx="4" cy="14" r="2" stroke="currentColor" stroke-width="1.5"/>
+                                                <circle cx="16" cy="14" r="2" stroke="currentColor" stroke-width="1.5"/>
+                                                <line x1="10" y1="5" x2="4" y2="12" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                                <line x1="10" y1="5" x2="16" y2="12" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                                <line x1="6" y1="14" x2="14" y2="14" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                            </svg>
+                                        </div>
+
+                                        <div class="model-check">
+                                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3 8L6.5 11.5L13 4.5"
+                                                stroke="currentColor"
+                                                stroke-width="1.5"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="model-name">Federated Autoencoder</div>
+
+                                <div class="model-desc">
+                                    Privacy-preserving distributed training across edge nodes — raw traffic never leaves the device.
+                                </div>
+
+                                <div class="model-tag">Privacy-First</div>
+                            </div>
+                        </label>
+
+                        <label class="model-card" id="card-centralized">
+                            <input type="radio" name="model" value="Centralized" class="model-radio">
+
+                            <div class="model-card-inner">
+                                <div class="model-card-top">
+                                    <div class="model-icon">
+                                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="4" cy="4" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="16" cy="4" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="4" cy="16" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="16" cy="16" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+                                            <line x1="7.5" y1="7.5" x2="5" y2="5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                            <line x1="12.5" y1="7.5" x2="15" y2="5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                            <line x1="7.5" y1="12.5" x2="5" y2="15" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                            <line x1="12.5" y1="12.5" x2="15" y2="15" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="model-check">
+                                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M3 8L6.5 11.5L13 4.5"
+                                                stroke="currentColor"
+                                                stroke-width="1.5"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="model-name">Centralized Autoencoder</div>
+
+                                <div class="model-desc">
+                                    Single-server training on the full IoT dataset with a globally calibrated anomaly threshold.
+                                </div>
+
+                                <div class="model-tag">Global Model</div>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <!-- Upload + Submit -->
+                <div class="form-section upload-section">
+                    <div class="section-label">Traffic Analysis</div>
+
+                    <div class="upload-zone" id="upload-zone">
+                        <input type="file" name="csvfile" id="csvfile" accept=".csv" required class="file-input">
+                        <div class="upload-zone-inner" id="upload-display">
+                            <div class="upload-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 15V4M12 4L8 8M12 4L16 8"
+                                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3 15V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V15"
+                                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="upload-label">Drop your CSV file here</div>
+                            <div class="upload-hint">or <span class="upload-link">click to browse</span></div>
+                            <div class="upload-format">CSV dataset containing IoT network flow features</div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="analyze-btn">
+                        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M7 10H13M10 7L13 10L10 13"
+                                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Run Threat Analysis
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+    </main>
+
+    <!-- ── Footer ───────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+
+            <div class="footer-author">
+                Developed by Seshapriyan · 2026
+            </div>
+
+            <div class="footer-paper">
+                Based on the methodology of Olanrewaju-George & Pranggono (2025)
+            </div>
+
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    /* ── Model card selection ─────────────────────────────── */
+    const radios = document.querySelectorAll('.model-radio');
+    const cards  = document.querySelectorAll('.model-card');
+
+    function syncSelection() {
+        cards.forEach(card => card.classList.remove('selected'));
+        radios.forEach(radio => {
+            if (radio.checked) radio.closest('.model-card').classList.add('selected');
+        });
+    }
+
+    radios.forEach(radio => radio.addEventListener('change', syncSelection));
+    syncSelection();
+
+    /* ── File upload feedback ─────────────────────────────── */
+    const fileInput    = document.getElementById('csvfile');
+    const uploadZone   = document.getElementById('upload-zone');
+    const uploadDisplay = document.getElementById('upload-display');
+
+    fileInput.addEventListener('change', function () {
+        if (!this.files.length) return;
+        const f = this.files[0];
+        const kb = (f.size / 1024).toFixed(1);
+        uploadDisplay.innerHTML = `
+            <div class="upload-icon upload-icon--success">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.5"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z"
+                          stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M14 2V8H20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="upload-label">${f.name}</div>
+            <div class="upload-hint">${kb}&thinsp;KB &middot; <span class="upload-link">Change file</span></div>
+        `;
+        uploadZone.classList.add('has-file');
+    });
+
+    /* ── Drag and drop ────────────────────────────────────── */
+    uploadZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        uploadZone.classList.add('drag-over');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+        uploadZone.classList.remove('drag-over');
+    });
+
+    uploadZone.addEventListener('drop', e => {
+        e.preventDefault();
+        uploadZone.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].name.toLowerCase().endsWith('.csv')) {
+            // Transfer files to the real input via DataTransfer
+            const dt = new DataTransfer();
+            dt.items.add(files[0]);
+            fileInput.files = dt.files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
+
+</body>
+</html>

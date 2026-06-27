@@ -1,0 +1,16 @@
+{
+    "Centralized": {
+        "accuracy": 99.5479,
+        "precision": 99.1059,
+        "recall": 99.998,
+        "specificity": 99.0978,
+        "f1": 99.5499
+    },
+    "Federated": {
+        "accuracy": 99.6791,
+        "precision": 99.3623,
+        "recall": 100.0,
+        "specificity": 99.3582,
+        "f1": 99.6801
+    }
+}

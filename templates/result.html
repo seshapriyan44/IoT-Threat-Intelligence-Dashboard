@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Result &mdash; IoT Threat Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- ── Header ───────────────────────────────────────────── -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="wordmark">
+                <svg class="wordmark-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7V12C3 16.55 6.84 20.74 12 22C17.16 20.74 21 16.55 21 12V7L12 2Z"
+                          stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M9 12L11 14L15 10"
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>IoT Threat Intelligence Dashboard</span>
+            </div>
+            <a href="/" class="back-link">&larr; New Analysis</a>
+        </div>
+    </header>
+
+    <!-- ── Main ─────────────────────────────────────────────── -->
+    <main class="main-content result-main">
+
+        <!-- ── Verdict ──────────────────────────────────────── -->
+        <div class="verdict-card
+            {% if 'ATTACK' in status|upper %}verdict-card--attack
+            {% elif 'BENIGN' in status|upper %}verdict-card--benign{% endif %}">
+
+            <div class="verdict-indicator">
+                {% if 'ATTACK' in status|upper %}
+                <!-- Warning icon -->
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V13M12 16.5V17M10.55 3.88L2.47 18C1.86 19.05 2.61 20.38 3.82 20.38H20.18C21.39 20.38 22.14 19.05 21.53 18L13.45 3.88C12.84 2.83 11.16 2.83 10.55 3.88Z"
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {% elif 'BENIGN' in status|upper %}
+                <!-- Shield check icon -->
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7V12C3 16.55 6.84 20.74 12 22C17.16 20.74 21 16.55 21 12V7L12 2Z"
+                          stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    <path d="M9 12L11 14L15 10"
+                          stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {% else %}
+                <!-- Info icon -->
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                {% endif %}
+            </div>
+
+            <div class="verdict-content">
+                <div class="verdict-eyebrow">Threat Verdict</div>
+                <div class="verdict-status">{{ status }}</div>
+                <div class="verdict-model">
+                    Analyzed with <strong>{{ model }} Model</strong>
+                </div>
+                <div class="verdict-file">
+                    Uploaded File: <strong>{{ uploaded_filename }}</strong>
+                </div>
+                
+            </div>
+
+            <div class="verdict-pulse"></div>
+        </div>
+
+        <!-- ── Detection Metrics ─────────────────────────────── -->
+        <div class="section-label">Detection Metrics</div>
+        <div class="metrics-grid">
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-name">Reconstruction Error</span>
+                    <svg class="metric-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 12L5 9L8 11L11 6L14 8" stroke="currentColor" stroke-width="1.2"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="metric-value">{{ error }}</div>
+                <div class="metric-unit">Mean squared error</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-name">Decision Threshold</span>
+                    <svg class="metric-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.2"
+                              stroke-linecap="round" stroke-dasharray="2 2"/>
+                    </svg>
+                </div>
+                <div class="metric-value">{{ threshold }}</div>
+                <div class="metric-unit">Learned anomaly threshold</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-name">Severity Level</span>
+                    <svg class="metric-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 1L9.8 5.4L14.5 5.9L11 9.1L12 13.8L8 11.4L4 13.8L5 9.1L1.5 5.9L6.2 5.4L8 1Z"
+                              stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="metric-value severity-value severity-{{ severity | lower }}">{{ severity }}</div>
+                <div class="metric-unit">Risk classification</div>
+            </div>
+
+        </div>
+
+        <!-- ── Explainability ────────────────────────────────── -->
+        <div class="section-label">Explainability Layer</div>
+
+        <div class="explainability-section">
+
+            <div class="explain-header">
+                <span class="explain-badge">XAI</span>
+                <span class="explain-title">
+                    Top Contributing Features
+                </span>
+                <span class="explain-meta">
+                    Reconstruction Error Analysis
+                </span>
+            </div>
+
+            <div class="explain-items">
+
+                {% for item in top_features %}
+
+                <div class="explain-item">
+
+                    <div class="explain-dot explain-dot--critical"></div>
+
+                    <div class="explain-text">
+
+                        <div class="explain-feature">
+                            {{ item.name }}
+                        </div>
+
+                        <div class="explain-desc">
+                            {{ item.description }}
+                        </div>
+
+                    </div>
+
+                    <span class="explain-weight">
+                        {{ "%.6f"|format(item.score) }}
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+        <!-- ── Visualization Suite ───────────────────────────── -->
+        <div class="section-label">Detection Analysis</div>
+        <div class="viz-grid">
+
+            <div class="viz-placeholder">
+                <div class="viz-header">
+                    <div class="viz-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3"  y="3"  width="4" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="10" y="7"  width="4" height="8"  rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="17" y="5"  width="4" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <line x1="2" y1="20" x2="22" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="viz-name">Feature Contribution</div>
+                </div>
+                <div class="chart-container">
+                    <a
+                        href="{{ url_for('static', filename=feature_chart) }}"
+                        target="_blank"
+                        title="Open full-size chart"
+                    >
+                        <img
+                            src="{{ url_for('static', filename=feature_chart) }}"
+                            alt="Feature Contribution Chart"
+                            class="feature-chart"
+                        >
+                    </a>
+                </div>
+                <div class="viz-subtitle">
+                    Top 5 most influential features
+                </div>
+            </div>
+
+            <div class="viz-placeholder">
+                <div class="viz-header">
+                    <div class="viz-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="5"  cy="12" r="2" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="12" cy="5"  r="2" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="19" cy="12" r="2" stroke="currentColor" stroke-width="1.5"/>
+                            <circle cx="12" cy="19" r="2" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M7 12H10M14 12H17M12 7V10M12 14V17"
+                                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="viz-name">Threat Score</div>
+                </div>
+
+                <div class="threat-widget">
+                    <div class="threat-score
+                        {% if threat_score < 30 %}
+                            safe
+                        {% elif threat_score < 70 %}
+                            warning
+                        {% else %}
+                            danger
+                        {% endif %}
+                    ">
+                        {{ threat_score }}%
+                    </div>
+
+                    <div class="score-bar">
+                        <div
+                            class="score-fill"
+                            style="width:{{ threat_score }}%;">
+                        </div>
+                    </div>
+
+                    <div class="threat-metrics">
+                        <div class="metric-line">
+                            <span>Error</span>
+                            <span>{{ "%.6f"|format(error) }}</span>
+                        </div>
+
+                        <div class="metric-line">
+                            <span>Threshold</span>
+                            <span>{{ "%.6f"|format(threshold) }}</span>
+                        </div>
+
+                        <div class="metric-line">
+                            <span>Error / Threshold</span>
+                            <span>{{ ratio_display }}×</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="viz-subtitle">
+                    Relative anomaly severity
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">
+            Model Performance
+        </div>
+        <div class="viz-grid">
+
+        <div class="viz-placeholder">
+            <div class="viz-header">
+                <div class="viz-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3"  y="3"  width="8" height="8"  rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="13" y="3"  width="8" height="8"  rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="3"  y="13" width="8" height="8"  rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        <rect x="13" y="13" width="8" height="8"  rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="viz-name">Confusion Matrix</div>
+            </div>
+            <div class="chart-container">
+                <a href="{{ url_for('static', filename=confusion_matrix) }}" target="_blank" title="Open full-size confusion matrix">
+                    <img
+                        src="{{ url_for('static', filename=confusion_matrix) }}"
+                        class="feature-chart"
+                        alt="Confusion Matrix"
+                    >
+                </a>
+            </div>
+            <div class="viz-subtitle">
+                Evaluation on test dataset
+            </div>
+        </div>
+
+        <div class="viz-placeholder">
+            <div class="viz-header">
+                <div class="viz-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 17L8 12L12 15L17 9L21 12"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 12L8 8L12 10L17 5L21 8"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                opacity="0.35"/>
+                    </svg>
+                </div>
+                <div class="viz-name">Model Comparison</div>
+            </div>
+            <div class="chart-container">
+                <a href="{{ url_for('static', filename='charts/model_comparison.png') }}" target="_blank" title="Open full-size model comparison chart">
+                    <img
+                        src="{{ url_for('static', filename='charts/model_comparison.png') }}"
+                        class="feature-chart"
+                        alt="Model Comparison Chart"
+                    >
+                </a>
+            </div>
+            <div class="viz-subtitle">
+                Centralized vs Federated
+                </div>
+        </div>
+
+        </div>
+
+    </main>
+
+    <!-- ── Footer ───────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+
+            <div class="footer-author">
+                Developed by Seshapriyan · 2026
+            </div>
+
+            <div class="footer-paper">
+                Based on the methodology of Olanrewaju-George & Pranggono (2025)
+            </div>
+
+        </div>
+    </footer>
+
+</div>
+
+</body>
+</html>
