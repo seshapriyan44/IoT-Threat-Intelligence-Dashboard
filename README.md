@@ -4,8 +4,6 @@ An intelligent, web-based Intrusion Detection System (IDS) for detecting IoT bot
 
 The system provides real-time threat analysis through an interactive Flask dashboard — upload IoT network traffic data and get attack predictions, threat severity, feature-level explanations, and model performance visualizations, all in one place.
 
-🔗 **Live Demo:** [your-app-name.onrender.com](#) <!-- replace once deployed -->
-
 ---
 
 ## Table of Contents
