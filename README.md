@@ -13,7 +13,6 @@ The system provides real-time threat analysis through an interactive Flask dashb
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
-- [Deployment](#deployment)
 - [Evaluating Models](#evaluating-models)
 - [Model Evaluation](#model-evaluation)
 - [Explainable AI](#explainable-ai)
@@ -96,7 +95,6 @@ A single Min-Max scaler, fitted on the benign training dataset, is reused consis
 | Layer | Tools |
 |---|---|
 | Backend | Python, Flask |
-| Deployment | Gunicorn, Render |
 | Machine Learning | TensorFlow, Keras, Scikit-learn, SHAP |
 | Data Processing | NumPy, Pandas |
 | Visualization | Matplotlib |
@@ -188,48 +186,6 @@ http://127.0.0.1:5000
 
 ---
 
-## Deployment
-
-This app is deployed on [Render](https://render.com). The steps below cover what's needed beyond local development.
-
-**1. Add a production server**
-
-Flask's built-in dev server isn't meant for production. Add Gunicorn to `requirements.txt`:
-
-```text
-gunicorn
-```
-
-**2. Add a `Procfile`** (or set this as Render's Start Command)
-
-```text
-web: gunicorn app:app
-```
-
-**3. Bind to Render's assigned port**
-
-Render injects a `PORT` environment variable at runtime — the app cannot hardcode `5000`. If you're running via Gunicorn this is handled automatically; if `app.run()` is still used anywhere for local fallback, make sure it reads:
-
-```python
-import os
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-```
-
-**4. Push to GitHub and connect the repo on Render**
-
-- Build Command: `pip install -r requirements.txt`
-- Start Command: `gunicorn app:app`
-
-The trained models (`.h5` / `.keras`), `scaler.pkl`, and `thresholds.json` are loaded at runtime, so the deployed application uses the exact same preprocessing and decision thresholds as the offline evaluation pipeline.
-
-**5. Known limitations on Render's free tier**
-
-- **RAM (512MB cap):** TensorFlow + model loading can be memory-heavy — check actual usage before assuming free tier is sufficient.
-- **Ephemeral disk:** the `uploads/` folder does not persist across restarts or redeploys; uploaded CSVs are wiped. This is expected behavior for the current single-session analysis flow, not a bug.
-- **Cold starts:** the service spins down after inactivity on the free tier. The first request after idle can take 30+ seconds while it spins back up and TensorFlow re-initializes.
-
----
-
 ## Evaluating Models
 
 To regenerate evaluation metrics and charts:
@@ -282,7 +238,7 @@ The Federated model shows a small but consistent edge over Centralized — most 
 
 For every prediction, the dashboard explains *why* a sample was flagged using a feature contribution analysis derived from the autoencoder's per-feature reconstruction error — identifying which input features deviated most from learned normal behavior, then mapping each to a human-readable description (e.g., "abnormal communication behavior was detected between network ports").
 
-A separate offline `shap_analysis.py` script is also included in the project for deeper SHAP (SHapley Additive Explanations) -based feature importance analysis on the trained models.
+A separate offline `shap_analysis.py` script is also included in the project for deeper SHAP (SHapley Additive Explanations)-based feature importance analysis on the trained models.
 
 The dashboard surfaces the **top 5 contributing features** for every uploaded dataset.
 
@@ -360,7 +316,7 @@ This implementation extends the original research with:
 - Live dashboard updates
 - Support for additional IoT intrusion datasets
 - Docker deployment
-- Persistent storage for uploaded files (e.g. S3-compatible storage) beyond Render's ephemeral disk
+- Cloud deployment
 
 ---
 
